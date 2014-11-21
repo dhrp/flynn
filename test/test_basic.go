@@ -109,8 +109,8 @@ func (s *BasicSuite) TestBasic(t *c.C) {
 	route := random.String(32) + ".dev"
 	newRoute := s.Flynn("route", "add", "http", route)
 	t.Assert(newRoute, Succeeds)
-
-	t.Assert(s.Flynn("route"), OutputContains, strings.TrimSpace(newRoute.Output))
+	routeID := strings.TrimSpace(newRoute.Output)
+	t.Assert(s.Flynn("route"), OutputContains, routeID)
 
 	waitForJobEventsActual(t, stream.Events, map[string]map[string]int{"web": {"up": 9, "down": 6}})
 
@@ -150,6 +150,12 @@ func (s *BasicSuite) TestBasic(t *c.C) {
 	}
 	t.Assert(res.StatusCode, c.Equals, 200)
 	t.Assert(string(contents), Matches, `Hello to Yahoo from Flynn on port \d+`)
+
+	t.Assert(s.Flynn("route", "remove", routeID), Succeeds)
+	routeOutput := s.Flynn("route").Output
+	if !strings.Contains(routeOutput, routeID) {
+		t.Fatal(fmt.Errorf("Expected \"%s\" to not contain \"%s\"", routeOutput, routeID))
+	}
 }
 
 type BuildpackSuite struct {
