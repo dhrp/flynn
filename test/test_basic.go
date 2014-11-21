@@ -112,7 +112,7 @@ func (s *BasicSuite) TestBasic(t *c.C) {
 	routeID := strings.TrimSpace(newRoute.Output)
 	t.Assert(s.Flynn("route"), OutputContains, routeID)
 
-	waitForJobEventsActual(t, stream.Events, map[string]map[string]int{"web": {"up": 9, "down": 6}})
+	waitForJobEventsActual(t, stream.Events, map[string]map[string]int{"web": {"up": 11, "down": 8}})
 
 	ps := s.Flynn("ps")
 	t.Assert(ps, Succeeds)
