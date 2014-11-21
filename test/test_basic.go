@@ -156,6 +156,15 @@ func (s *BasicSuite) TestBasic(t *c.C) {
 	if !strings.Contains(routeOutput, routeID) {
 		t.Fatal(fmt.Errorf("Expected \"%s\" to not contain \"%s\"", routeOutput, routeID))
 	}
+
+	keys := s.Flynn("key")
+	t.Assert(keys, Succeeds)
+	k := keys.Output[:strings.Index(keys.Output, " ")]
+	t.Assert(s.Flynn("key", "remove", k), Succeeds)
+	keys = s.Flynn("key")
+	if !strings.Contains(keys.Output, k) {
+		t.Fatal(fmt.Errorf("Expected \"%s\" to not contain \"%s\"", keys.Output, k))
+	}
 }
 
 type BuildpackSuite struct {
