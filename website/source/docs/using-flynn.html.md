@@ -302,7 +302,7 @@ Your json file may look like this:
 ```
 {
     "processes": {
-        "env" {"FOO": "bar"},
+        "env": {"FOO": "bar"},
         "sshd": {
             "cmd": ["/bin/bash", "-c", "echo starting sshd on port $PORT; /usr/sbin/sshd -D -p $PORT"],
             "ports": [{"proto": "tcp", "port": 22222}]
